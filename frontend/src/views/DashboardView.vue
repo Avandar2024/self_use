@@ -2,7 +2,7 @@
   <div>
     <!-- 顶部控制栏 -->
     <div class="dashboard-header">
-      <h1>教育数据看板</h1>
+      <h1>{{ dashboardText.title }}</h1>
       <n-button 
         @click="handleRefresh" 
         :loading="loading"
@@ -13,20 +13,23 @@
         <template #icon>
           <n-icon><refresh-icon /></n-icon>
         </template>
-        刷新数据
+        {{ dashboardText.refresh }}
       </n-button>
     </div>
     
     <!-- 调试信息 -->
-    <div class="debug-info">
-      <p>总用户数: {{ summaryData?.totalUsers }}</p>
-      <p>课程数量: {{ tableData?.length }}</p>
-      <p>新闻数量: {{ newsData?.length }}</p>
+    <div class="debug-info" v-if="debugMode">
+      <p>{{ dashboardText.debug.totalUsers }}: {{ summaryData?.totalUsers }}</p>
+      <p>{{ dashboardText.debug.coursesCount }}: {{ tableData?.length }}</p>
+      <p>{{ dashboardText.debug.newsCount }}: {{ newsData?.length }}</p>
     </div>
     
     <n-spin :show="loading">
       <!-- 概览卡片 -->
-      <StatisticCards :summary-data="summaryData" />
+      <div class="summary-section">
+        <h2>{{ dashboardText.summary.title }}</h2>
+        <StatisticCards :summary-data="summaryData" />
+      </div>
       
       <n-grid :cols="12" :x-gap="16" :y-gap="16" class="dashboard-grid">
         <!-- 热门课程表格 -->
@@ -63,6 +66,10 @@ import CourseTable from '../components/CourseTable.vue'
 import PlatformDistribution from '../components/PlatformDistribution.vue'
 import LatestNews from '../components/LatestNews.vue'
 import { useDashboardData } from '../services/dataService'
+import dashboardText from '../resource/dashboard'
+
+// 调试模式开关
+const debugMode = ref(false)
 
 // 获取数据
 const { summaryData, tableData, newsData, platformData, refreshData } = useDashboardData()
@@ -76,10 +83,10 @@ const handleRefresh = async () => {
   loading.value = true
   try {
     await refreshData()
-    message.success('数据已更新')
+    message.success(dashboardText.messages.updateSuccess)
   } catch (error) {
     console.error('Refresh error:', error)
-    message.error('更新数据失败')
+    message.error(dashboardText.messages.updateFailed)
   } finally {
     loading.value = false
   }
@@ -113,6 +120,16 @@ onMounted(() => {
 .refresh-btn {
   display: flex;
   align-items: center;
+}
+
+.summary-section {
+  margin-bottom: 20px;
+}
+
+.summary-section h2 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #333333;
 }
 
 .dashboard-grid {

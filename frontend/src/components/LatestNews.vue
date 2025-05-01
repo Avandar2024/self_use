@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NCard } from 'naive-ui'
+import newsText from '../resource/components/latestNews'
 
 interface NewsItem {
   title: string;
@@ -13,13 +14,21 @@ defineProps<{
 </script>
 
 <template>
-  <n-card title="最新动态" class="news-card bordered-card">
-    <div v-for="(news, index) in newsData" :key="index" class="news-item">
-      <div class="news-title">{{ news.title }}</div>
-      <div class="news-footer">
-        <span>{{ news.date }}</span>
-        <span>{{ news.views }} 浏览</span>
+  <n-card :title="newsText.title" class="news-card bordered-card">
+    <div v-if="newsData && newsData.length > 0">
+      <div v-for="(news, index) in newsData" :key="index" class="news-item">
+        <div class="news-title">{{ news.title }}</div>
+        <div class="news-footer">
+          <span>{{ news.date }}</span>
+          <span>{{ news.views }} 浏览</span>
+        </div>
       </div>
+      <div class="view-more">
+        <a href="#">{{ newsText.viewMore }}</a>
+      </div>
+    </div>
+    <div v-else class="no-data">
+      {{ newsText.noNews }}
     </div>
   </n-card>
 </template>
@@ -61,6 +70,23 @@ defineProps<{
   justify-content: space-between;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.6);
+}
+
+.view-more {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.view-more a {
+  color: #2080f0;
+  text-decoration: none;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 /* 确保卡片标题为黑色 */

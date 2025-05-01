@@ -16,6 +16,7 @@ import {
   MenuOutline as MenuIcon,
   ChevronBackOutline as ChevronBackIcon
 } from '@vicons/ionicons5'
+import sidebarText from '../resource/components/sidebar'
 
 const router = useRouter()
 // 控制侧边栏折叠状态
@@ -27,22 +28,22 @@ function renderIcon(icon: Component) {
 
 const menuOptions = [
   {
-    label: '首页',
+    label: sidebarText.menuItems.home,
     key: 'home',
     icon: renderIcon(HomeIcon)
   },
   {
-    label: '今日消息',
+    label: sidebarText.menuItems.dashboard,
     key: 'dashboard',
     icon: renderIcon(ChartIcon)
   },
   {
-    label: 'ai互动',
+    label: sidebarText.menuItems.chat,
     key: 'chat',
     icon: renderIcon(BookIcon)
   },
   {
-    label: '关于我们',
+    label: sidebarText.menuItems.about,
     key: 'about',
     icon: renderIcon(InfoIcon)
   }
@@ -97,6 +98,7 @@ const toggleSidebar = () => {
     >
       <div class="logo-container">
         <img alt="Logo" class="logo" src="../assets/logo.svg" />
+        <span v-if="!collapsed" class="platform-title">{{ sidebarText.title }}</span>
       </div>
       <n-menu
         :collapsed-width="64"
@@ -105,6 +107,10 @@ const toggleSidebar = () => {
         default-value="dashboard"
         @update:value="handleMenuSelect"
       />
+      <div v-if="!collapsed" class="footer">
+        <div class="version">{{ sidebarText.footer.version }} 1.0.0</div>
+        <div class="copyright">{{ sidebarText.footer.copyright }}</div>
+      </div>
     </n-layout-sider>
   </div>
 </template>
@@ -153,13 +159,35 @@ const toggleSidebar = () => {
 .logo-container {
   padding: 16px;
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-top: 40px; /* 为顶部菜单按钮留出空间 */
+}
+
+.platform-title {
+  margin-left: 12px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .logo {
   width: 40px;
   height: 40px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.version {
+  margin-bottom: 4px;
 }
 
 /* 确保菜单项文本颜色为黑色 */

@@ -3,6 +3,7 @@ import {
   NCard, 
   NDataTable
 } from 'naive-ui'
+import courseTableText from '../resource/components/courseTable'
 
 // 表格数据类型定义
 interface Course {
@@ -20,36 +21,44 @@ defineProps<{
 // 表格列定义
 const columns = [
   {
-    title: '排名',
-    key: 'rank'
-  },
-  {
-    title: '课程名称',
+    title: courseTableText.columns.name,
     key: 'name'
   },
   {
-    title: '平台',
+    title: courseTableText.columns.platform,
     key: 'platform'
   },
   {
-    title: '学习人数',
+    title: courseTableText.columns.students,
     key: 'students'
   },
   {
-    title: '满意度',
+    title: courseTableText.columns.rating,
     key: 'satisfaction'
+  },
+  {
+    title: courseTableText.columns.progress,
+    key: 'progress'
   }
 ]
 </script>
 
 <template>
-  <n-card title="热门课程排名" class="dashboard-card bordered-card">
-    <n-data-table
-      :columns="columns"
-      :data="tableData"
-      :bordered="false"
-      :single-line="false"
-    />
+  <n-card :title="courseTableText.title" class="dashboard-card bordered-card">
+    <template #header-extra>
+      <a href="#" class="view-all">{{ courseTableText.viewAll }}</a>
+    </template>
+    <div v-if="tableData && tableData.length > 0">
+      <n-data-table
+        :columns="columns"
+        :data="tableData"
+        :bordered="false"
+        :single-line="false"
+      />
+    </div>
+    <div v-else class="no-data">
+      {{ courseTableText.noData }}
+    </div>
   </n-card>
 </template>
 
@@ -61,6 +70,18 @@ const columns = [
   position: relative;
   overflow: hidden;
   color: #333333;
+}
+
+.view-all {
+  font-size: 14px;
+  color: #2080f0;
+  text-decoration: none;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 /* 确保卡片标题和表格内容为黑色 */

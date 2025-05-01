@@ -1,6 +1,6 @@
 <template>
   <div class="chat-container">
-    <n-card title="智能助手对话" class="chat-card">
+    <n-card :title="chatText.title" class="chat-card">
       <div class="chat-messages" ref="chatMessagesRef">
         <div v-for="(message, index) in messages" :key="index" 
              :class="['message', message.role === 'user' ? 'user-message' : 'ai-message']">
@@ -18,7 +18,7 @@
         <n-input
           v-model:value="inputMessage"
           type="textarea"
-          placeholder="请输入你想问的问题..."
+          :placeholder="chatText.placeholder"
           :autosize="{ minRows: 2, maxRows: 5 }"
           @keydown.enter.prevent="sendMessage"
         />
@@ -33,14 +33,14 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M2.01 21L23 12L2.01 3L2 10l15 2l-15 2z"/></svg>
             </n-icon>
           </template>
-          发送
+          {{ chatText.send }}
         </n-button>
       </div>
     </n-card>
     
-    <n-card title="常见问题" class="suggestions-card">
+    <n-card :title="chatText.examples.title" class="suggestions-card">
       <div class="suggestion-list">
-        <div v-for="(suggestion, index) in suggestions" :key="index" 
+        <div v-for="(suggestion, index) in chatText.examples.questions" :key="index" 
              class="suggestion-item" @click="useQuestion(suggestion)">
           {{ suggestion }}
         </div>
@@ -58,6 +58,7 @@ import {
   NIcon, 
   NAvatar
 } from 'naive-ui'
+import chatText from '../resource/chat'
 
 interface ChatMessage {
   role: 'user' | 'ai';
@@ -69,22 +70,13 @@ interface ChatMessage {
 const messages = ref<ChatMessage[]>([
   {
     role: 'ai',
-    content: '你好！我是AI教育助手，有什么我可以帮助你的吗？',
+    content: chatText.welcomeMessage,
     time: new Date().toLocaleTimeString()
   }
 ]);
 
 // 输入内容
 const inputMessage = ref('');
-
-// 常见问题建议
-const suggestions = ref([
-  '如何提高学习效率？',
-  '推荐一些计算机科学入门课程',
-  '帮我分析最近的学习数据',
-  '如何制定有效的学习计划？',
-  '有哪些好的学习方法？'
-]);
 
 // 头像
 const userAvatar = 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg';
