@@ -1,52 +1,57 @@
 <template>
-  <div class="chat-container">
-    <!-- 聊天侧边栏 -->
-    <chat-sidebar
-      :chat-history="chatHistory"
-      :current-chat-index="currentChatIndex"
-      @new-chat="startNewChat"
-      @select-chat="selectChat"
-      @delete-chat="deleteChat"
-    />
-    
-    <!-- 主聊天区域 -->
-    <div class="chat-main">
-      <!-- 聊天头部 -->
-      <div class="chat-header">
-        <h2>{{ currentChat?.title || chatResource.title }}</h2>
-      </div>
+  <div class="chat-view-wrapper">
+    <div class="chat-container">
+      <!-- 聊天侧边栏 -->
+      <chat-sidebar
+        :chat-history="chatHistory"
+        :current-chat-index="currentChatIndex"
+        @new-chat="startNewChat"
+        @select-chat="selectChat"
+        @delete-chat="deleteChat"
+      />
       
-      <!-- 聊天消息区域 -->
-      <div class="chat-messages" ref="messagesContainer">
-        <!-- 欢迎消息 -->
-        <welcome-screen
-          v-if="messages.length === 0"
-          @ask-example="askExample"
-        />
+      <!-- 主聊天区域 -->
+      <div class="chat-main">
+        <!-- 聊天头部 -->
+        <div class="chat-header">
+          <transition name="fade" mode="out-in">
+            <h2 :key="currentChatIndex">{{ currentChat?.title || chatResource.title }}</h2>
+          </transition>
+        </div>
         
-        <!-- 聊天消息列表 -->
-        <template v-else>
-          <chat-message
-            v-for="(msg, index) in messages"
-            :key="index"
-            :role="msg.role"
-            :content="msg.content"
-          />
-          
-          <!-- 正在输入提示 -->
-          <div v-if="isTyping" class="message ai-message">
-            <div class="message-avatar">
-              <n-avatar :size="32" round>AI</n-avatar>
+        <!-- 聊天消息区域 -->
+        <div class="chat-messages" ref="messagesContainer">
+          <!-- 欢迎消息 -->
+          <transition name="fade" mode="out-in">
+            <welcome-screen
+              v-if="messages.length === 0"
+              @ask-example="askExample"
+            />
+            
+            <!-- 聊天消息列表 -->
+            <div v-else class="messages-list">
+              <transition-group name="message-fade">
+                <chat-message
+                  v-for="(msg, index) in messages"
+                  :key="'msg-' + index"
+                  :role="msg.role"
+                  :content="msg.content"
+                />
+              </transition-group>
+              
+              <!-- 正在输入提示 -->
+              <transition name="fade">
+                <div v-if="isTyping" class="ai-typing">
+                  <div class="typing-indicator">{{ chatResource.thinking }}</div>
+                </div>
+              </transition>
             </div>
-            <div class="message-content">
-              <div class="typing-indicator">{{ chatResource.thinking }}</div>
-            </div>
-          </div>
-        </template>
+          </transition>
+        </div>
+        
+        <!-- 输入区域 -->
+        <chat-input @send="onSendMessage" />
       </div>
-      
-      <!-- 输入区域 -->
-      <chat-input @send="onSendMessage" />
     </div>
   </div>
 </template>
@@ -60,15 +65,22 @@ import ChatMessage from '../components/chat/ChatMessage.vue'
 import WelcomeScreen from '../components/chat/WelcomeScreen.vue'
 import ChatInput from '../components/chat/ChatInput.vue'
 
+// 定义ChatItem接口
+interface ChatItem {
+  id: string;
+  title: string;
+  date: Date;
+}
+
 // 聊天历史
-const chatHistory = ref([
-  { id: 1, title: '复旦大学邯郸校区靠近上海站' },
-  { id: 2, title: '南京站和南京南站是同一个站吗？' },
-  { id: 3, title: '模拟性能对比图表生成' },
-  { id: 4, title: '多轮生成性能与计算效率比较' },
-  { id: 5, title: '构造四变量卡诺图' },
-  { id: 6, title: '上海站到虹桥站交通时间和路南' },
-  { id: 7, title: '创建可导出SVG的替代方案' }
+const chatHistory = ref<ChatItem[]>([
+  { id: '1', title: '复旦大学邯郸校区靠近上海站', date: new Date() },
+  { id: '2', title: '南京站和南京南站是同一个站吗？', date: new Date() },
+  { id: '3', title: '模拟性能对比图表生成', date: new Date() },
+  { id: '4', title: '多轮生成性能与计算效率比较', date: new Date() },
+  { id: '5', title: '构造四变量卡诺图', date: new Date() },
+  { id: '6', title: '上海站到虹桥站交通时间和路南', date: new Date() },
+  { id: '7', title: '创建可导出SVG的替代方案', date: new Date() }
 ])
 
 // 当前选中的聊天索引
@@ -214,45 +226,109 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.chat-view-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: #f9f9fb;
+  overflow: hidden;
+}
+
 .chat-container {
   display: flex;
-  height: calc(100vh - 60px);
-  background-color: #f9f9fb;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .chat-main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
+  background-color: #fff;
 }
 
 .chat-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 0;
+  border-bottom: 1px solid #eaeaea;
   background-color: #fff;
 }
 
 .chat-header h2 {
   margin: 0;
+  padding: 16px 24px;
   font-size: 18px;
   color: #333;
+  font-weight: 500;
 }
 
 .chat-messages {
   flex: 1;
-  padding: 20px;
+  padding: 0;
   overflow-y: auto;
   background-color: #fff;
+  position: relative;
+}
+
+.messages-list {
+  min-height: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-typing {
+  padding: 16px 24px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .typing-indicator {
   display: inline-block;
   animation: pulse 1.2s infinite;
+  color: #666;
 }
 
 @keyframes pulse {
   0% { opacity: 0.6; }
   50% { opacity: 1; }
   100% { opacity: 0.6; }
+}
+
+/* 过渡效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.message-fade-enter-active {
+  transition: all 0.4s ease;
+}
+
+.message-fade-leave-active {
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.message-fade-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.message-fade-leave-to {
+  opacity: 0;
+}
+
+.message-fade-move {
+  transition: transform 0.4s ease;
 }
 </style>

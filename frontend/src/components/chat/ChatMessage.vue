@@ -1,21 +1,16 @@
 <template>
-  <div 
-    class="message" 
-    :class="{ 'user-message': role === 'user', 'ai-message': role === 'ai' }"
-  >
-    <div class="message-avatar">
-      <n-avatar :size="32" round>
-        {{ role === 'user' ? 'U' : 'AI' }}
-      </n-avatar>
+  <div class="message-container" :class="role">
+    <div v-if="role === 'user'" class="message-bubble">
+      <div v-html="formattedContent" class="message-content"></div>
     </div>
-    <div class="message-content">
-      <div v-html="formattedContent"></div>
+    
+    <div v-else class="ai-content">
+      <div v-html="formattedContent" class="message-content"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NAvatar } from 'naive-ui'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -43,29 +38,58 @@ const formattedContent = computed(() => {
 </script>
 
 <style scoped>
-.message {
+.message-container {
   display: flex;
-  margin-bottom: 24px;
+  width: 100%;
+  margin: 0;
   gap: 12px;
+  align-items: flex-start;
 }
 
-.message-avatar {
-  flex-shrink: 0;
+.message-container.user {
+  justify-content: flex-end;
+  padding: 8px 16px;
+}
+
+.message-container.ai {
+  flex-direction: column;
+  background-color: #f9f9f9;
+  padding: 16px 24px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.message-bubble {
+  max-width: 80%;
+  word-wrap: break-word;
+  padding: 10px 16px;
+  border-radius: 18px;
+  background-color: #1890ff;
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* AI 内容直接嵌入页面 */
+.ai-content {
+  width: 100%;
+  word-wrap: break-word;
 }
 
 .message-content {
-  flex: 1;
-  padding: 16px;
-  border-radius: 8px;
-  font-size: 15px;
   line-height: 1.6;
 }
 
-.user-message .message-content {
-  background-color: #e6f7ff;
+.ai .message-content {
+  font-size: 15px;
 }
 
-.ai-message .message-content {
-  background-color: #f9f9fb;
+.user .message-content {
+  text-align: left;
+}
+
+.ai + .ai {
+  border-top: none;
+  margin-top: -16px; /* 使连续的AI消息更加紧凑 */
+  padding-top: 0;
 }
 </style>
