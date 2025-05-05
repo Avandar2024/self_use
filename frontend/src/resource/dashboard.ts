@@ -33,6 +33,20 @@ export default {
     title: "最新动态",
     viewMore: "查看更多"
   },
+  todayMessages: {
+    title: "今日消息",
+    viewMore: "查看更多",
+    noMessages: "今日暂无新消息"
+  },
+  historyMessages: {
+    title: "历史消息",
+    viewMore: "查看更多",
+    views: "浏览",
+    noMessages: "暂无历史消息"
+  },
+  calendar: {
+    title: "日历"
+  },
   debug: {
     totalUsers: "总用户数",
     coursesCount: "课程数量",

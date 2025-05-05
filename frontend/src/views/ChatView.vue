@@ -2,19 +2,15 @@
   <div class="chat-container">
     <n-card :title="chatText.title" class="chat-card">
       <div class="chat-messages" ref="chatMessagesRef">
-        <div v-for="(message, index) in messages" :key="index" 
-             :class="['message', message.role === 'user' ? 'user-message' : 'ai-message']">
-          <div class="message-avatar">
-            <n-avatar :src="message.role === 'user' ? userAvatar : aiAvatar" />
-          </div>
-          <div class="message-content">
-            <div class="message-text">{{ message.content }}</div>
-            <div class="message-time">{{ message.time }}</div>
-          </div>
-        </div>
+        <ChatMessage 
+          v-for="(message, index) in messages" 
+          :key="index"
+          :message="message"
+          :userAvatar="userAvatar"
+        />
       </div>
       
-      <div class="chat-input">
+      <div class="chat-input blur-effect">
         <n-input
           v-model:value="inputMessage"
           type="textarea"
@@ -41,7 +37,7 @@
     <n-card :title="chatText.examples.title" class="suggestions-card">
       <div class="suggestion-list">
         <div v-for="(suggestion, index) in chatText.examples.questions" :key="index" 
-             class="suggestion-item" @click="useQuestion(suggestion)">
+             class="suggestion-item blur-effect" @click="useQuestion(suggestion)">
           {{ suggestion }}
         </div>
       </div>
@@ -55,9 +51,9 @@ import {
   NCard, 
   NInput, 
   NButton, 
-  NIcon, 
-  NAvatar
+  NIcon
 } from 'naive-ui'
+import ChatMessage from '../components/ChatMessage.vue'
 import chatText from '../resource/chat'
 
 interface ChatMessage {
@@ -78,9 +74,8 @@ const messages = ref<ChatMessage[]>([
 // 输入内容
 const inputMessage = ref('');
 
-// 头像
+// 用户头像
 const userAvatar = 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg';
-const aiAvatar = 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg';
 
 // 聊天区域DOM引用
 const chatMessagesRef = ref<HTMLElement | null>(null);
@@ -191,60 +186,14 @@ onMounted(() => {
   display: flex;
   gap: 10px;
   align-items: flex-end;
-  padding-top: 20px;
+  padding: 20px 15px 5px;
+  border-radius: 16px;
 }
 
 .send-btn {
   height: 54px;
   display: flex;
   align-items: center;
-}
-
-.message {
-  display: flex;
-  gap: 12px;
-  max-width: 85%;
-}
-
-.user-message {
-  align-self: flex-end;
-  flex-direction: row-reverse;
-}
-
-.ai-message {
-  align-self: flex-start;
-}
-
-.message-avatar {
-  flex-shrink: 0;
-}
-
-.message-content {
-  background-color: #f5f5f5;
-  padding: 12px 16px;
-  border-radius: 12px;
-  position: relative;
-}
-
-.user-message .message-content {
-  background-color: #e6f7ff;
-  border-top-right-radius: 0;
-}
-
-.ai-message .message-content {
-  background-color: #f5f5f5;
-  border-top-left-radius: 0;
-}
-
-.message-text {
-  margin-bottom: 5px;
-  white-space: pre-wrap;
-}
-
-.message-time {
-  font-size: 12px;
-  color: #999;
-  text-align: right;
 }
 
 .suggestion-list {
@@ -255,15 +204,17 @@ onMounted(() => {
 
 .suggestion-item {
   padding: 12px;
-  background-color: #f5f5f5;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease, backdrop-filter 0.3s ease;
+  background-color: rgba(245, 245, 245, 0.7);
 }
 
 .suggestion-item:hover {
-  background-color: #e6f7ff;
+  background-color: rgba(230, 247, 255, 0.7);
   transform: translateY(-2px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* 滚动条样式 */

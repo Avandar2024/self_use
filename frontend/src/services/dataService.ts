@@ -27,6 +27,18 @@ export interface PlatformData {
   color: string;
 }
 
+export interface TodayMessage {
+  title: string;
+  time: string;
+  source: string;
+}
+
+export interface HistoryMessage {
+  title: string;
+  date: string;
+  views: number;
+}
+
 // 初始数据
 const summaryData = ref<SummaryData>({
   totalUsers: 3458,
@@ -87,6 +99,22 @@ const platformData = ref<PlatformData[]>([
   { name: '其他平台', percentage: 6, color: '#f0a020' },
 ])
 
+// 添加今日消息数据
+const todayMessages = ref<TodayMessage[]>([
+  { title: '系统通知：第三学期选课系统已开放', time: '10:30', source: '教务系统' },
+  { title: '南大举行2025年春季招聘会', time: '09:15', source: '就业中心' },
+  { title: '今日下午14:00有学术讲座', time: '08:45', source: '学术办公室' },
+  { title: '图书馆新增电子资源订阅', time: '08:00', source: '图书馆' }
+])
+
+// 添加历史消息数据
+const historyMessages = ref<HistoryMessage[]>([
+  { title: '计算机科学学院组织学生参观华为研发中心', date: '2025-05-03', views: 876 },
+  { title: '南大学生在国际程序设计大赛中获得金奖', date: '2025-05-02', views: 1240 },
+  { title: '2025年度奖学金评定工作开始', date: '2025-04-30', views: 982 },
+  { title: '新学期教材领取通知', date: '2025-04-28', views: 1562 }
+])
+
 // 刷新数据的方法
 export function refreshData() {
   // 在真实应用中，这里会调用后端API
@@ -107,6 +135,22 @@ export function refreshData() {
       })).sort((a, b) => b.students - a.students)
         .map((item, index) => ({...item, rank: index + 1}))
       
+      // 更新今日消息（随机调整时间）
+      todayMessages.value = todayMessages.value.map(message => {
+        const hour = Math.floor(8 + Math.random() * 10);
+        const minute = Math.floor(Math.random() * 60);
+        return {
+          ...message,
+          time: `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
+        };
+      });
+      
+      // 更新历史消息（随机调整浏览量）
+      historyMessages.value = historyMessages.value.map(message => ({
+        ...message,
+        views: message.views + Math.floor(Math.random() * 100) - 30
+      }));
+      
       resolve()
     }, 1500)
   })
@@ -119,6 +163,8 @@ export function useDashboardData() {
     tableData,
     newsData,
     platformData,
+    todayMessages,
+    historyMessages,
     refreshData
   }
 }
