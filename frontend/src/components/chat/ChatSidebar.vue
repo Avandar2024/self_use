@@ -34,7 +34,7 @@
             <div class="item-actions">
               <n-button quaternary circle size="small" @click.stop="showMoreActions(chat)">
                 <template #icon>
-                  <n-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></n-icon>
+                  <n-icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></n-icon>
                 </template>
               </n-button>
             </div>
@@ -174,11 +174,14 @@ const showMoreActions = (chat: ChatItem) => {
 .chat-sidebar {
   width: 240px;
   background-color: var(--md-blue-50);
-  /* 移除边框 */
-  /* border-right: 1px solid #e5e7eb; */
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* 增加钝角边框效果，使其更加明显 */
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  overflow: hidden; /* 确保内容不会溢出边框 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -202,7 +205,8 @@ const showMoreActions = (chat: ChatItem) => {
   height: 38px;
   background-color: var(--md-blue-50);
   border: 1px solid var(--md-blue-200);
-  border-radius: 8px;
+  /* 修改为钝角边框 */
+  border-radius: 12px;
   color: var(--md-blue-700);
   transition: all 0.2s ease;
 }
@@ -252,7 +256,8 @@ const showMoreActions = (chat: ChatItem) => {
 
 .history-item {
   padding: 8px 12px;
-  border-radius: 6px;
+  /* 修改为钝角边框 */
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   display: flex;

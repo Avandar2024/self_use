@@ -1,5 +1,6 @@
 import './assets/main.css'
 import './assets/material-design-colors.css'
+import { applyMaterialTheme } from './assets/themeUtils'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -49,6 +50,9 @@ const naive = create({
     NAvatar
   ]
 })
+
+// 初始化 Material Design 主题
+applyMaterialTheme('#1976d2', false) // 使用蓝色作为主题色，明亮模式
 
 const app = createApp(App)
 app.use(router)

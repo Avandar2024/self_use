@@ -4,8 +4,10 @@
       <div v-html="formattedContent" class="message-content"></div>
     </div>
     
-    <div v-else class="ai-content">
-      <div v-html="formattedContent" class="message-content"></div>
+    <div v-else class="ai-content-wrapper">
+      <div class="ai-content">
+        <div v-html="formattedContent" class="message-content"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -53,26 +55,37 @@ const formattedContent = computed(() => {
 
 .message-container.ai {
   flex-direction: column;
-  background-color: #f9f9f9;
-  padding: 16px 24px;
+  padding: 16px 0;
   border-bottom: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
 }
 
 .message-bubble {
   max-width: 80%;
   word-wrap: break-word;
   padding: 10px 16px;
-  border-radius: 18px;
+  /* 修改为钝角边框 */
+  border-radius: 16px;
   background-color: #1890ff;
   color: white;
-  border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 6px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* AI 内容直接嵌入页面 */
+/* AI 内容居中但文本左对齐 */
+.ai-content-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .ai-content {
   width: 100%;
+  max-width: 768px;
+  padding: 0 24px;
   word-wrap: break-word;
+  text-align: left;
 }
 
 .message-content {

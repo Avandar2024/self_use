@@ -1,28 +1,30 @@
 <template>
   <transition name="slide-up" appear>
     <div class="chat-input-container">
-      <div class="input-wrapper">
-        <n-input 
-          v-model:value="inputValue"
-          type="textarea" 
-          :autosize="{ minRows: 1, maxRows: 4 }"
-          :placeholder="chatResource.placeholder"
-          @keydown.enter.prevent="sendMessage"
-          class="input-field"
-        />
-        <div class="input-actions">
-          <n-button 
-            type="primary" 
-            :disabled="!inputValue.trim()" 
-            @click="sendMessage"
-            :class="{ 'button-active': inputValue.trim() }"
-          >
-            {{ chatResource.send }}
-          </n-button>
+      <div class="input-container-wrapper">
+        <div class="input-wrapper">
+          <n-input 
+            v-model:value="inputValue"
+            type="textarea" 
+            :autosize="{ minRows: 1, maxRows: 4 }"
+            :placeholder="chatResource.placeholder"
+            @keydown.enter.prevent="sendMessage"
+            class="input-field"
+          />
+          <div class="input-actions">
+            <n-button 
+              type="primary" 
+              :disabled="!inputValue.trim()" 
+              @click="sendMessage"
+              :class="{ 'button-active': inputValue.trim() }"
+            >
+              {{ chatResource.send }}
+            </n-button>
+          </div>
         </div>
-      </div>
-      <div class="chat-footer">
-        <small>内容由 AI 生成，请勿完全依赖</small>
+        <div class="chat-footer">
+          <small>内容由 AI 生成，请勿完全依赖</small>
+        </div>
       </div>
     </div>
   </transition>
@@ -47,10 +49,18 @@ function sendMessage() {
 
 <style scoped>
 .chat-input-container {
-  padding: 16px;
+  padding: 16px 0;
   background-color: #fff;
   border-top: 1px solid #e5e7eb;
   position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.input-container-wrapper {
+  width: 100%;
+  max-width: 768px;
+  padding: 0 24px;
 }
 
 .input-wrapper {
@@ -142,5 +152,15 @@ function sendMessage() {
   0% { box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4); }
   70% { box-shadow: 0 0 0 6px rgba(24, 144, 255, 0); }
   100% { box-shadow: 0 0 0 0 rgba(24, 144, 255, 0); }
+}
+
+:deep(.n-input) {
+  /* 为输入框添加钝角边框 */
+  border-radius: 12px;
+}
+
+:deep(.n-button) {
+  /* 为发送按钮添加钝角边框 */
+  border-radius: 12px;
 }
 </style>

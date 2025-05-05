@@ -1,7 +1,18 @@
-/* Material Design Colors
-   Based on https://material.io/design/color/the-color-system.html */
+/* Material Design Colors - Using @material/material-color-utilities */
 
 :root {
+  /* 通过 material-color-utilities 自动设置的系统颜色
+     这些变量会由 themeUtils.ts 中的 applyMaterialTheme() 函数自动设置 */
+  
+  /* 映射原有变量到 material-color-utilities 生成的变量 */
+  --md-primary: var(--md-sys-color-primary);
+  --md-primary-light: var(--md-sys-color-primary-container);
+  --md-primary-dark: var(--md-sys-color-primary-dark, var(--md-sys-color-primary));
+  --md-background-light: var(--md-sys-color-surface-variant);
+  --md-surface: var(--md-sys-color-surface);
+  --md-error: var(--md-sys-color-error);
+  
+  /* 保留原有的蓝色和灰色变量，作为备用和向后兼容 */
   /* Blue */
   --md-blue-50: #e3f2fd;
   --md-blue-100: #bbdefb;
@@ -29,23 +40,17 @@
   --md-grey-700: #616161;
   --md-grey-800: #424242;
   --md-grey-900: #212121;
-
-  /* Common colors for use */
-  --md-primary: var(--md-blue-500);
-  --md-primary-light: var(--md-blue-300);
-  --md-primary-dark: var(--md-blue-700);
-  --md-background-light: var(--md-grey-50);
-  --md-surface: white;
-  --md-error: #b00020;
 }
 
 /* Helper classes for common color uses */
 .md-bg-primary {
   background-color: var(--md-primary);
+  color: var(--md-sys-color-on-primary, white);
 }
 
 .md-bg-primary-light {
   background-color: var(--md-primary-light);
+  color: var(--md-sys-color-on-primary-container, black);
 }
 
 .md-text-primary {
@@ -54,4 +59,19 @@
 
 .md-border-primary {
   border-color: var(--md-primary);
+}
+
+/* 新增的一些辅助类 */
+.md-surface {
+  background-color: var(--md-surface);
+  color: var(--md-sys-color-on-surface, black);
+}
+
+.md-error {
+  color: var(--md-error);
+}
+
+.md-bg-error {
+  background-color: var(--md-error);
+  color: var(--md-sys-color-on-error, white);
 }
