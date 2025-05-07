@@ -1,6 +1,9 @@
 <template>
   <div class="home-container">
-    <h1>欢迎使用南京大学数据聚合平台</h1>
+    <div class = "logo-container">
+      <img src="../assets/nju.png" class="logo-image" />
+    </div>
+    <h1>欢迎使用南京大学信息聚合平台</h1>
     <p class="description">这是教育数据聚合平台的首页，提供功能导航。</p>
     <div class="features">
       <div class="feature" @click="navigateTo('dashboard')">
@@ -31,6 +34,11 @@
         <p>如果你有兴趣了解我们的话</p>
       </div>
     </div>
+    
+    <div class="mascot-container">
+      <img src="../assets/xiaoxun.jpg" class="mascot-image" />
+    </div>
+    
   </div>
 </template>
 
@@ -102,5 +110,28 @@ h1 {
 .feature p {
   color: #666;
   line-height: 1.6;
+}
+
+.mascot-container {
+  margin-top: 120px;
+  display: flex;
+  justify-content: center;
+}
+
+.mascot-image {
+  max-width: 500px; /* Increased from 300px to 500px */
+  width: 100%;
+  border-radius: 16px; /* Slightly increased border radius */
+}
+
+.logo-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+.logo-image {
+  width: 150px; /* Adjust the size as needed */
+  height: auto;
 }
 </style>
