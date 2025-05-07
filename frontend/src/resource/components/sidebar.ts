@@ -1,8 +1,8 @@
 export default {
-  title: "教育数据平台",
+  title: "南哪信息",
   menuItems: {
     home: "首页",
-    dashboard: "数据仪表盘",
+    dashboard: "信息中心",
     chat: "智能助手",
     about: "关于我们"
   },

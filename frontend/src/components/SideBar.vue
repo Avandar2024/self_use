@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { h, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { h, ref, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import type { Component } from 'vue'
 import { 
   NLayoutSider, 
@@ -19,8 +19,17 @@ import {
 import sidebarText from '../resource/components/sidebar'
 
 const router = useRouter()
+const route = useRoute()
 // 控制侧边栏折叠状态
 const collapsed = ref(true)
+
+// 计算当前活动菜单项
+const activeKey = computed(() => {
+  const path = route.path
+  if (path === '/') return 'home'
+  // 去掉路径前面的斜杠
+  return path.substring(1)
+})
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) })
@@ -97,14 +106,14 @@ const toggleSidebar = () => {
       :class="{ 'sidebar-expanded': !collapsed }"
     >
       <div class="logo-container">
-        <img alt="Logo" class="logo" src="../assets/logo.svg" />
+        <img alt="Logo" class="logo" src="../assets/nju.svg" />
         <span v-if="!collapsed" class="platform-title">{{ sidebarText.title }}</span>
       </div>
       <n-menu
         :collapsed-width="64"
         :collapsed-icon-size="22"
         :options="menuOptions"
-        default-value="dashboard"
+        :value="activeKey"
         @update:value="handleMenuSelect"
       />
       <div v-if="!collapsed" class="footer">

@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import { NCard } from 'naive-ui'
 import newsText from '../resource/components/latestNews'
+import { computed } from 'vue' // Import computed
 
 interface NewsItem {
   title: string;
   date: string;
-  views: number;
+  group: number;
 }
 
-defineProps<{
+const props = defineProps<{ // Store props in a variable
   newsData: NewsItem[];
 }>();
+
+// Computed property to check if news items are overflowing
+const isNewsOverflowing = computed(() => {
+  return props.newsData && props.newsData.length > 6; // Show "View more" if more than 6 items
+});
 </script>
 
 <template>
@@ -20,10 +26,9 @@ defineProps<{
         <div class="news-title">{{ news.title }}</div>
         <div class="news-footer">
           <span>{{ news.date }}</span>
-          <span>{{ news.views }} 浏览</span>
         </div>
       </div>
-      <div class="view-more">
+      <div v-if="isNewsOverflowing" class="view-more"> <!-- Conditionally display view-more -->
         <a href="#">{{ newsText.viewMore }}</a>
       </div>
     </div>
@@ -45,6 +50,7 @@ defineProps<{
 
 .news-card {
   margin-top: 16px;
+  height: 400px; /* 固定高度 */
 }
 
 .news-item {

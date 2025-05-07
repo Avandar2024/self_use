@@ -58,7 +58,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick, computed } from 'vue'
-import { NAvatar } from 'naive-ui'
 import chatResource from '../resource/chat.ts'
 import ChatSidebar from '../components/chat/ChatSidebar.vue'
 import ChatMessage from '../components/chat/ChatMessage.vue'
@@ -74,13 +73,26 @@ interface ChatItem {
 
 // 聊天历史
 const chatHistory = ref<ChatItem[]>([
-  { id: '1', title: '复旦大学邯郸校区靠近上海站', date: new Date() },
-  { id: '2', title: '南京站和南京南站是同一个站吗？', date: new Date() },
-  { id: '3', title: '模拟性能对比图表生成', date: new Date() },
-  { id: '4', title: '多轮生成性能与计算效率比较', date: new Date() },
-  { id: '5', title: '构造四变量卡诺图', date: new Date() },
-  { id: '6', title: '上海站到虹桥站交通时间和路南', date: new Date() },
-  { id: '7', title: '创建可导出SVG的替代方案', date: new Date() }
+  {
+    id: '1',
+    title: '南京大学计算机学院新闻',
+    date: new Date(),
+  },
+  {
+    id: '2',
+    title: '南京大学校园活动咨询',
+    date: new Date(),
+  },
+  {
+    id: '3',
+    title: '南京大学图书馆服务',
+    date: new Date(),
+  },
+  {
+    id: '4',
+    title: '南京大学招生政策查询',
+    date: new Date(),
+  }
 ])
 
 // 当前选中的聊天索引
@@ -93,26 +105,10 @@ const currentChat = computed(() => {
 
 // 聊天消息
 const messages = ref([
-  { role: 'user', content: '复旦大学邯郸校区靠近上海站' },
-  { 
-    role: 'ai', 
-    content: `靠近上海站的是复旦大学的邯郸校区（主校区）。
-
-具体信息：
-
-- 邯郸校区地址：上海市杨浦区邯郸路220号
-- 距离上海站：约10公里，车程约20-30分钟（视交通情况）。
-
-交通方式：
-- 地铁：上海站乘坐地铁1号线（莘庄方向）→ 人民广场站换乘8号线（市光路方向）→ 四平路站换乘
-10号线（新江湾城方向）→ 江湾体育场站或五角场站下车，步行即可到达。
-- 打车/自驾：约20-30分钟，建议走南北高架或内环高架。
-
-其他校区：
-
-1. 江湾校区：位于杨浦区，距离上海站约12公里。
-2. 枫林校区：位于徐汇区，距离上海站约8公里，但主要为医学院。
-3. 张江校区：位于浦东新区，距离上海站约20公里。` 
+  { role: 'user', content: '今天计算机学院有什么新闻？' },
+  {
+    role: 'ai',
+    content: '正在为您查找南京大学计算机学院的最新新闻...'
   }
 ])
 
@@ -138,10 +134,14 @@ async function onSendMessage(message: string) {
 
   // 模拟AI响应延迟
   setTimeout(() => {
+    let aiResponse = `这是对"${message}"的模拟回复。请关注学校官方通知。`;
+    if (message === '今天计算机学院有什么新闻？') {
+      aiResponse = '南京大学计算机科学与技术系今日发布了关于人工智能研讨会的最新消息，详情请见院系官网公告。此外，本周五将举办博士生毕业论文答辩会。';
+    }
     // 添加AI回复
     messages.value.push({
       role: 'ai',
-      content: `这是对"${message}"的回答。在实际应用中，这里会连接到后端API获取AI的回复。`
+      content: aiResponse
     })
 
     // 隐藏正在输入提示
@@ -169,31 +169,15 @@ function scrollToBottom() {
 // 选择聊天
 function selectChat(index: number) {
   currentChatIndex.value = index
-  
+
   // 在实际应用中，这里会加载选中聊天的历史消息
   // 此处仅做演示
-  if (index === 0) {
+  if (chatHistory.value[index]?.title === '南京大学计算机学院新闻') {
     messages.value = [
-      { role: 'user', content: '复旦大学邯郸校区靠近上海站' },
-      { 
-        role: 'ai', 
-        content: `靠近上海站的是复旦大学的邯郸校区（主校区）。
-
-具体信息：
-
-- 邯郸校区地址：上海市杨浦区邯郸路220号
-- 距离上海站：约10公里，车程约20-30分钟（视交通情况）。
-
-交通方式：
-- 地铁：上海站乘坐地铁1号线（莘庄方向）→ 人民广场站换乘8号线（市光路方向）→ 四平路站换乘
-10号线（新江湾城方向）→ 江湾体育场站或五角场站下车，步行即可到达。
-- 打车/自驾：约20-30分钟，建议走南北高架或内环高架。
-
-其他校区：
-
-1. 江湾校区：位于杨浦区，距离上海站约12公里。
-2. 枫林校区：位于徐汇区，距离上海站约8公里，但主要为医学院。
-3. 张江校区：位于浦东新区，距离上海站约20公里。` 
+      { role: 'user', content: '今天计算机学院有什么新闻？' },
+      {
+        role: 'ai',
+        content: '南京大学计算机科学与技术系今日发布了关于人工智能研讨会的最新消息，详情请见院系官网公告。此外，本周五将举办博士生毕业论文答辩会。'
       }
     ]
   } else {
@@ -233,7 +217,7 @@ onMounted(() => {
   right: 0;
   bottom: 0;
   z-index: 100;
-  background-color: #f9f9fb;
+  background-color: var(--md-grey-50);
   overflow: hidden;
 }
 
@@ -249,20 +233,25 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  background-color: #fff;
+  background-color: #fffff0; /* Ivory color */
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .chat-header {
   padding: 0;
   border-bottom: 1px solid #eaeaea;
-  background-color: #fff;
+  background-color: #fffff0; /* Ivory color */
+  text-align: center;
+  border-top-left-radius: 16px;
 }
 
 .chat-header h2 {
   margin: 0;
   padding: 16px 24px;
   font-size: 18px;
-  color: #333;
+  color: var(--md-grey-800);
   font-weight: 500;
 }
 
@@ -270,7 +259,7 @@ onMounted(() => {
   flex: 1;
   padding: 0;
   overflow-y: auto;
-  background-color: #fff;
+  background-color: #fffff0; /* Ivory color */
   position: relative;
 }
 
@@ -283,14 +272,14 @@ onMounted(() => {
 
 .ai-typing {
   padding: 16px 24px;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #eaeaea;
+  background-color: #fffbeb; /* Slightly darker ivory for contrast */
+  border-bottom: 1px solid #eaeada;
 }
 
 .typing-indicator {
   display: inline-block;
   animation: pulse 1.2s infinite;
-  color: #666;
+  color: var(--md-grey-700);
 }
 
 @keyframes pulse {

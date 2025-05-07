@@ -1,5 +1,5 @@
 export default {
-  title: "最新动态",
+  title: "ddl提醒",
   viewMore: "查看更多",
   noNews: "暂无最新动态",
   loading: "加载中...",

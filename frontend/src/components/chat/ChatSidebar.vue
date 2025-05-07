@@ -2,7 +2,7 @@
   <div class="chat-sidebar">
     <!-- Logo -->
     <div class="logo">
-      <h2>deepseek</h2>
+      <h2>小蓝鲸</h2>
     </div>
     
     <!-- 开启新对话 按钮 -->
@@ -173,15 +173,16 @@ const showMoreActions = (chat: ChatItem) => {
 <style scoped>
 .chat-sidebar {
   width: 240px;
-  background-color: var(--md-blue-50);
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* 增加钝角边框效果，使其更加明显 */
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
-  overflow: hidden; /* 确保内容不会溢出边框 */
+  overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  color: #333333;
 }
 
 .logo {
@@ -203,16 +204,15 @@ const showMoreActions = (chat: ChatItem) => {
 .new-chat-btn {
   width: 100%;
   height: 38px;
-  background-color: var(--md-blue-50);
-  border: 1px solid var(--md-blue-200);
-  /* 修改为钝角边框 */
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-grey-200);
   border-radius: 12px;
-  color: var(--md-blue-700);
+  color: var(--md-primary);
   transition: all 0.2s ease;
 }
 
 .new-chat-btn:hover {
-  background-color: var(--md-blue-100);
+  background-color: var(--md-grey-100);
 }
 
 .btn-content {
@@ -227,7 +227,7 @@ const showMoreActions = (chat: ChatItem) => {
   align-items: center;
   justify-content: center;
   margin-right: 8px;
-  color: var(--md-blue-500);
+  color: var(--md-primary);
 }
 
 .history-container {
@@ -243,7 +243,7 @@ const showMoreActions = (chat: ChatItem) => {
 
 .date-label {
   font-size: 13px;
-  color: #666;
+  color: var(--md-grey-600);
   margin-bottom: 5px;
   padding-left: 5px;
 }
@@ -256,7 +256,6 @@ const showMoreActions = (chat: ChatItem) => {
 
 .history-item {
   padding: 8px 12px;
-  /* 修改为钝角边框 */
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
@@ -267,15 +266,16 @@ const showMoreActions = (chat: ChatItem) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #333;
+  color: var(--md-grey-800);
 }
 
 .history-item.active {
-  background-color: var(--md-blue-100);
+  background-color: var(--md-grey-100);
+  color: var(--md-primary);
 }
 
 .history-item:hover {
-  background-color: var(--md-blue-100);
+  background-color: var(--md-grey-100);
 }
 
 .item-actions {
@@ -286,5 +286,4 @@ const showMoreActions = (chat: ChatItem) => {
 .history-item:hover .item-actions {
   opacity: 1;
 }
-
 </style>

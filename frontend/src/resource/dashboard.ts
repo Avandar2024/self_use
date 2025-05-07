@@ -1,5 +1,5 @@
 export default {
-  title: "数据仪表盘",
+  title: "信息中心",
   refresh: "刷新数据",
   summary: {
     title: "教育数据总览",
@@ -14,23 +14,12 @@ export default {
     resourcesAccessed: "资源访问量",
     completionRate: "完成率"
   },
-  courseTable: {
-    title: "热门课程",
-    columns: {
-      name: "课程名称",
-      platform: "平台",
-      students: "学生数量",
-      rating: "评分",
-      progress: "完成进度"
-    },
-    viewAll: "查看全部"
-  },
   platformDistribution: {
     title: "平台分布",
     description: "学习资源平台占比分析"
   },
-  latestNews: {
-    title: "最新动态",
+  ddlNews: {
+    title: "ddl提醒",
     viewMore: "查看更多"
   },
   todayMessages: {

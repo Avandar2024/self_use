@@ -50,7 +50,10 @@ const formattedContent = computed(() => {
 
 .message-container.user {
   justify-content: flex-end;
-  padding: 8px 16px;
+  padding: 8px 8px 8px 16px; /* Reduced right padding */
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
 }
 
 .message-container.ai {

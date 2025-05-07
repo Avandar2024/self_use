@@ -1,27 +1,10 @@
 <template>
   <div>
-    <!-- 顶部控制栏 -->
-    <div class="dashboard-header">
-      <h1>{{ dashboardText.title }}</h1>
-      <n-button 
-        @click="handleRefresh" 
-        :loading="loading"
-        secondary 
-        type="primary"
-        class="refresh-btn"
-      >
-        <template #icon>
-          <n-icon><refresh-icon /></n-icon>
-        </template>
-        {{ dashboardText.refresh }}
-      </n-button>
-    </div>
-    
     <!-- 调试信息 -->
     <div class="debug-info" v-if="debugMode">
       <p>{{ dashboardText.debug.totalUsers }}: {{ summaryData?.totalUsers }}</p>
       <p>{{ dashboardText.debug.coursesCount }}: {{ tableData?.length }}</p>
-      <p>{{ dashboardText.debug.newsCount }}: {{ newsData?.length }}</p>
+      <p>{{ dashboardText.debug.newsCount }}: {{ ddlData?.length }}</p>
     </div>
     
     <n-spin :show="loading">      
@@ -69,8 +52,8 @@
         
         <!-- 右侧区域 -->
         <n-grid-item :span="4">
-          <!-- 最新动态 -->
-          <LatestNews :news-data="newsData" />
+          <!-- ddl提醒 -->
+          <DdlNews :newsData="ddlBySelectedDate" />
           
           <!-- 简单日历 -->
           <n-card :title="dashboardText.calendar.title" class="calendar-card">
@@ -92,18 +75,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { 
-  NButton,
+import { ref, onMounted, computed } from 'vue'
+import {
   NGrid,
   NGridItem,
   NSpin,
-  NIcon,
   NCard,
   createDiscreteApi
 } from 'naive-ui'
-import { RefreshOutline as RefreshIcon } from '@vicons/ionicons5'
-import LatestNews from '../components/LatestNews.vue'
+import DdlNews from '../components/DdlNews.vue'
 import SimpleCalendar from '../components/SimpleCalendar.vue'
 import { useDashboardData } from '../services/dataService'
 import dashboardText from '../resource/dashboard'
@@ -112,38 +92,29 @@ import dashboardText from '../resource/dashboard'
 const debugMode = ref(false)
 
 // 获取数据
-const { summaryData, tableData, newsData, platformData, todayMessages, historyMessages, refreshData } = useDashboardData()
+const { summaryData, tableData, ddlData, todayMessages, historyMessages } = useDashboardData()
 const loading = ref(false)
 const selectedDate = ref(new Date())
 
 // 创建离散API，可以在组件外使用
 const { message } = createDiscreteApi(['message'])
 
-// 刷新数据的方法
-const handleRefresh = async () => {
-  loading.value = true
-  try {
-    await refreshData()
-    message.success(dashboardText.messages.updateSuccess)
-  } catch (error) {
-    console.error('Refresh error:', error)
-    message.error(dashboardText.messages.updateFailed)
-  } finally {
-    loading.value = false
-  }
+// 日期选择处理
+function handleDateSelect(date: Date) {
+  selectedDate.value = date
 }
 
-// 日期选择处理
-const handleDateSelect = (date: Date) => {
-  console.log('Selected date:', date)
-  // 这里可以添加日期选择的业务逻辑，如查询特定日期的DDL等
-}
+// 根据选中日期过滤 DDL 数据
+const ddlBySelectedDate = computed(() => {
+  const sd = selectedDate.value.toISOString().slice(0, 10) // YYYY-MM-DD
+  return ddlData.value.filter(item => item.date === sd)
+})
 
 // 确保在页面加载后数据可用
 onMounted(() => {
   console.log('Dashboard mounted, data available:', { 
     summaryData: summaryData.value,
-    newsData: newsData.value,
+    newsData: ddlData.value,
     todayMessages: todayMessages.value,
     historyMessages: historyMessages.value
   });
@@ -162,11 +133,6 @@ onMounted(() => {
   color: #333333;
   font-size: 24px;
   margin: 0;
-}
-
-.refresh-btn {
-  display: flex;
-  align-items: center;
 }
 
 .summary-section {

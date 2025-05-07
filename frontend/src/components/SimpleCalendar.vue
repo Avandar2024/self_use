@@ -68,8 +68,8 @@ const weekdays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 // 获取当前月份和年份的显示文本
 const currentMonthYear = computed(() => {
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June', 
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 
+    'July', 'Aug', 'Sept', 'Oct','Nov', 'Dec'
   ];
   return `${monthNames[currentMonth.value]} ${currentYear.value}`;
 });
@@ -230,12 +230,7 @@ onMounted(() => {
   color: #ccc;
 }
 
-.today, .selected {
-  background-color: #8052da;
-  color: white;
-}
-
-.selected:not(.today) {
+.selected {
   background-color: #8052da;
   color: white;
 }

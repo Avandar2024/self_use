@@ -15,10 +15,10 @@ export interface Course {
   satisfaction: number;
 }
 
-export interface NewsItem {
+export interface DdlItem {
   title: string;
   date: string;
-  views: number;
+  group: number; // 0: 今天, 1: 昨天, 2: 更早
 }
 
 export interface PlatformData {
@@ -85,12 +85,13 @@ const tableData = ref<Course[]>([
   }
 ])
 
-const newsData = ref<NewsItem[]>([
-  { title: '南大计算机学院举办2025春季学术论坛', date: '2025-04-25', views: 1240 },
-  { title: '人工智能研究中心新增三位特聘教授', date: '2025-04-20', views: 986 },
-  { title: '2025年度教学改革项目申报开始', date: '2025-04-18', views: 876 },
-  { title: '南大与微软联合开展AI人才培养计划', date: '2025-04-15', views: 1320 }
-])
+const ddlData = ref<DdlItem[]>([
+  { title: '提交人工智能课程作业', date: '2025-05-07', group: 0 },
+  { title: '大数据分析项目报告截止', date: '2025-05-07', group: 0 },
+  { title: '计算机网络实验报告提交', date: '2025-05-06', group: 1 },
+  { title: '高级Java编程期末考试', date: '2025-05-05', group: 2 },
+  { title: 'Python数据分析课程论文', date: '2025-05-01', group: 2 }
+]);
 
 const platformData = ref<PlatformData[]>([
   { name: '五大学堂', percentage: 38, color: '#2080f0' },
@@ -161,7 +162,7 @@ export function useDashboardData() {
   return {
     summaryData,
     tableData,
-    newsData,
+    ddlData,
     platformData,
     todayMessages,
     historyMessages,
