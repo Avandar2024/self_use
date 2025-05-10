@@ -51,6 +51,7 @@ const isNewsOverflowing = computed(() => {
 .news-card {
   margin-top: 16px;
   height: 400px; /* 固定高度 */
+  width: 100%;
 }
 
 .news-item {

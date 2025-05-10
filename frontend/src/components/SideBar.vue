@@ -17,11 +17,12 @@ import {
   ChevronBackOutline as ChevronBackIcon
 } from '@vicons/ionicons5'
 import sidebarText from '../resource/components/sidebar'
+import { useSidebarStore } from '@/stores/sidebarStore';
+
+const sidebarStore = useSidebarStore();
 
 const router = useRouter()
 const route = useRoute()
-// 控制侧边栏折叠状态
-const collapsed = ref(true)
 
 // 计算当前活动菜单项
 const activeKey = computed(() => {
@@ -63,13 +64,13 @@ const handleMenuSelect = (key: string) => {
   router.push(`/${key === 'home' ? '' : key}`)
   // 在移动设备上选择菜单项后自动折叠侧边栏
   if (window.innerWidth < 768) {
-    collapsed.value = true
+    sidebarStore.collapsed = true
   }
 }
 
 // 切换侧边栏显示/隐藏
 const toggleSidebar = () => {
-  collapsed.value = !collapsed.value
+  sidebarStore.collapsed = !sidebarStore.collapsed
 }
 </script>
 
@@ -80,7 +81,7 @@ const toggleSidebar = () => {
       <n-button circle>
         <template #icon>
           <n-icon>
-            <MenuIcon v-if="collapsed" />
+            <MenuIcon v-if="sidebarStore.collapsed" />
             <ChevronBackIcon v-else />
           </n-icon>
         </template>
@@ -89,9 +90,9 @@ const toggleSidebar = () => {
     
     <!-- 侧边栏遮罩层 -->
     <div 
-      v-show="!collapsed" 
+      v-show="!sidebarStore.collapsed" 
       class="sidebar-overlay"
-      @click="collapsed = true"
+      @click="sidebarStore.collapsed = true"
     ></div>
     
     <!-- 侧边栏内容 -->
@@ -100,14 +101,14 @@ const toggleSidebar = () => {
       collapse-mode="width"
       :collapsed-width="0"
       :width="240"
-      :collapsed="collapsed"
+      :collapsed="sidebarStore.collapsed"
       :native-scrollbar="false"
       class="sidebar"
-      :class="{ 'sidebar-expanded': !collapsed }"
+      :class="{ 'sidebar-expanded': !sidebarStore.collapsed }"
     >
       <div class="logo-container">
         <img alt="Logo" class="logo" src="../assets/nju.svg" />
-        <span v-if="!collapsed" class="platform-title">{{ sidebarText.title }}</span>
+        <span v-if="!sidebarStore.collapsed" class="platform-title">{{ sidebarText.title }}</span>
       </div>
       <n-menu
         :collapsed-width="64"
@@ -116,7 +117,7 @@ const toggleSidebar = () => {
         :value="activeKey"
         @update:value="handleMenuSelect"
       />
-      <div v-if="!collapsed" class="footer">
+      <div v-if="!sidebarStore.collapsed" class="footer">
         <div class="version">{{ sidebarText.footer.version }} 1.0.0</div>
         <div class="copyright">{{ sidebarText.footer.copyright }}</div>
       </div>

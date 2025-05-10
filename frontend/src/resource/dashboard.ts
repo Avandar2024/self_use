@@ -8,16 +8,6 @@ export default {
     thisMonth: "本月数据",
     all: "全部数据"
   },
-  statistics: {
-    activeUsers: "活跃用户",
-    coursesViewed: "课程浏览量",
-    resourcesAccessed: "资源访问量",
-    completionRate: "完成率"
-  },
-  platformDistribution: {
-    title: "平台分布",
-    description: "学习资源平台占比分析"
-  },
   ddlNews: {
     title: "ddl提醒",
     viewMore: "查看更多"

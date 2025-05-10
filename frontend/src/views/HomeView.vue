@@ -1,8 +1,5 @@
 <template>
   <div class="home-container">
-    <div class = "logo-container">
-      <img src="../assets/nju.png" class="logo-image" />
-    </div>
     <h1>欢迎使用南京大学信息聚合平台</h1>
     <p class="description">这是教育数据聚合平台的首页，提供功能导航。</p>
     <div class="features">
@@ -37,6 +34,7 @@
     
     <div class="mascot-container">
       <img src="../assets/xiaoxun.jpg" class="mascot-image" />
+      <img src="../assets/nju.png" class="logo-image" />
     </div>
     
   </div>
@@ -60,6 +58,7 @@ const navigateTo = (route: string) => {
   text-align: center;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 60px;
 }
 
 h1 {
@@ -112,26 +111,25 @@ h1 {
   line-height: 1.6;
 }
 
+/* 调整两张图片的关系，使它们并排显示，并在小屏幕上自动换行 */
 .mascot-container {
   margin-top: 120px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* 允许在小屏幕上换行 */
+  gap: 60px; /* 增加图片之间的间距 */
 }
 
 .mascot-image {
-  max-width: 500px; /* Increased from 300px to 500px */
+  max-width: 500px; /* 调整图片大小 */
   width: 100%;
-  border-radius: 16px; /* Slightly increased border radius */
+  border-radius: 16px;
 }
 
-.logo-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
 .logo-image {
-  width: 150px; /* Adjust the size as needed */
+  max-width: 180px; /* 调整Logo大小 */
+  width: 100%;
   height: auto;
 }
 </style>

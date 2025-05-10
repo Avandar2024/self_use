@@ -24,7 +24,6 @@ onErrorCaptured((err) => {
 <template>
   <n-config-provider>
     <n-message-provider>
-      <!-- 移除 has-sider 属性，因为侧边栏现在是弹出式的 -->
       <n-layout position="absolute">
         <!-- 侧边栏 -->
         <SideBar />
